@@ -15,11 +15,8 @@ public:
 	~WebcamManager();
 
 	void init();
-	void grab();
+	cv::Mat grab();
 	void close();
-
-signals:
-	void sigBroadcastWebcamFrame(cv::Mat);
 
 private:
 	bool m_bIsWebcamOpened;

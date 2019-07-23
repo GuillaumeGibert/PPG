@@ -11,6 +11,8 @@
 // Window
 #include "interface/MainWindow.h"
 
+#include "workers/WorkerWebcam.h"
+
 // Qt
 #include <QThread>
 
@@ -43,11 +45,19 @@ public:
 	*/
 	void init(MainWindow* window);
 
+
+
 private:
-	
+	void registerMetaTypes();
+
+	void initWorkers();
+	void setWorkerConnections();
+	void moveWorkersToThread();
+	void stopWorkerThreads();
+	void deleteWorkers();
 
 signals:
-
+	void sigStartWebcam();
 	// -------------------- SIGNALS FOR THE WINDOW --------------------
 
 	
@@ -63,7 +73,8 @@ public:
 	
 private:
 	MainWindow* m_window = nullptr;						/**< The main window. */
-
+	WorkerWebcam* m_pWorkerWebcam = nullptr;
+	QThread m_TWorkerWebcam;
 	
 };
 

@@ -13,7 +13,10 @@
 #include <QMessagebox.h>
 #include <QFileDialog>
 
+// OpenCV
+#include "opencv2/opencv.hpp"
 
+#include "ImageDisplay.h"
 
 // Qt stuff
 namespace Ui {
@@ -42,19 +45,25 @@ public:
 	*/
 	~MainWindow();
 
-public slots:
 	
+
+public slots:
+	void setWebcamFrame(cv::Mat);
 
 	
 
 signals:
 	
 private:
-	
+	void initWidgets();
+	void updateWebcamDisplay();
+	QImage mat2QImage(const cv::Mat3b & oMat);
 
 private:
     Ui::MainWindow *ui;									// Also Qt stuff
 	
+	ImageDisplay* m_pWImageDisplay;
+	cv::Mat m_oWebcamFrame;
 };
 
 #endif // MAINWINDOW_H

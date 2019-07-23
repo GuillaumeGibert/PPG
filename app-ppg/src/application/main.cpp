@@ -15,23 +15,6 @@
 
 int main(int argc, char *argv[]) 
 { 
-	//QApplication app(argc, argv);  
-	/*
-	WebcamManager l_oWebcam;
-	l_oWebcam.init();
-
-	for (;;)
-	{
-		l_oWebcam.grab();
-		if (cv::waitKey(10) == 27) 
-			break; // stop capturing by pressing ESC 
-	}
-
-	l_oWebcam.close();
-	*/
-	//return app.exec();
-	
-	
 	QApplication a(argc, argv);
 	
 	Application app;

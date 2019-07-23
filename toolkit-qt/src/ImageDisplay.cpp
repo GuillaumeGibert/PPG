@@ -9,6 +9,7 @@ using namespace std;
 ImageDisplay::ImageDisplay(QWidget* oParent, const bool bScaleImage) : m_oSize(size()), m_bScaleImage(bScaleImage)
 {
 	this->setParent(oParent); 
+	m_bScaleImage = false;
 }
 
 ImageDisplay::~ImageDisplay()

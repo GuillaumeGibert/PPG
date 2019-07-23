@@ -18,24 +18,20 @@ void WebcamManager::init()
 	// checks if it is opened
 	if (m_oWebcam.isOpened())
 		m_bIsWebcamOpened = true;
-
 }
 
-void WebcamManager::grab()
+cv::Mat WebcamManager::grab()
 {
+	cv::Mat l_oFrame;
+
 	// checks if the camera is opened
 	if (!m_bIsWebcamOpened)
-		return;
+		return l_oFrame;
 
 	// gets a new frame from camera
-	cv::Mat l_oFrame;
 	m_oWebcam >> l_oFrame; 
 
-	if (!l_oFrame.empty())
-	{
-		//imshow("test", l_oFrame);
-		emit sigBroadcastWebcamFrame(l_oFrame);
-	}
+	return l_oFrame;
 }
 
 void WebcamManager::close()
