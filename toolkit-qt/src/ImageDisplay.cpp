@@ -6,11 +6,8 @@
 
 using namespace std;
 
-ImageDisplay::ImageDisplay(QWidget* oParent, const bool bScaleImage) : m_oSize(size()), m_bScaleImage(bScaleImage)
-{
-	this->setParent(oParent); 
-	m_bScaleImage = false;
-}
+ImageDisplay::ImageDisplay() 
+{}
 
 ImageDisplay::~ImageDisplay()
 {}
@@ -26,34 +23,17 @@ void ImageDisplay::paintEvent(QPaintEvent *)
 		return;
 	}
 
-	if(m_bScaleImage)
-	{
-		m_oScaledImage = m_oQImage.scaled(m_oSize,
-		      Qt::KeepAspectRatio
-		      ,Qt::SmoothTransformation
-		      );
-	}
-	else
-	{
-		m_oScaledImage = m_oQImage;
-	}
-
-	painter.drawImage(QPoint(), m_oScaledImage);
+	painter.drawImage(QPoint(), m_oQImage);
 }
 
 
 
-
-
-void ImageDisplay::resizeEvent ( QResizeEvent * event )
-{
-	m_oSize = event->size();
-	resize(m_oSize);
-}
 
 void ImageDisplay::refreshDisplay(const QImage &oQImage)
 {
 	m_oQImage = oQImage.copy();
+	resize(QSize(m_oQImage.width(), m_oQImage.height()));
+	
 	update();
 }
 
