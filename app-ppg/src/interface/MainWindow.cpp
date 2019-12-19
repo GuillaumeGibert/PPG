@@ -42,11 +42,13 @@ void MainWindow::initWidgets()
 
 void MainWindow::updateWebcamDisplay()
 {
+	imshow("test", m_oWebcamFrame);
 	m_pWImageDisplay->refreshDisplay(mat2QImage(m_oWebcamFrame));
 }
 
 QImage MainWindow::mat2QImage(const cv::Mat3b & oMat)
 {
+	std::cout << "oMat = (" << oMat.cols << ", " << oMat.rows << ")" << std::endl;
 	QImage l_oQImage(oMat.cols, oMat.rows, QImage::Format_ARGB32);
 
 	for (int jj = 0; jj < oMat.rows; ++jj)

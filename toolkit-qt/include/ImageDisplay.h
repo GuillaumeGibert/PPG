@@ -16,19 +16,14 @@ class ImageDisplay : public QWidget
 		* \param [in] oParent : QWidget parent
 		* \param [in] bScaleImage : true to scale image
 		*/		
-		ImageDisplay(QWidget* oParent = 0,  const bool bScaleImage = true);
+		ImageDisplay();
 
 		/**
 		* \brief Destructor of ImageDisplay
 		*/	    
 		~ImageDisplay();
 		
-		/**
-		* \brief Resizes events
-		* \param [in] event : QResizeEvent
-		*/
-		void resizeEvent ( QResizeEvent * event );
-
+		
 	public slots:
 
 		/**
@@ -54,17 +49,9 @@ signals :
 	private:
 
 		QImage m_oQImage;	/**< rgb image to display */
-		QImage m_oScaledImage; /**< scaled image  */
-
+		
 		QSize m_oSize;  /**< size of the image */
 
-		
-		bool m_bScaleImage; /**< scaled image boolean */
-
-		
-
-	public :
-		QVector<QSize> m_vCurrentSize;/**< current size of the image */
 };
 
 
