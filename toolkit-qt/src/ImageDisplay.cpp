@@ -23,22 +23,7 @@ void ImageDisplay::paintEvent(QPaintEvent *)
 		return;
 	}
 
-
-	if(m_bScaleImage)
-	{
-		m_oScaledImage = m_oQImage.scaled(m_oSize,
-		      Qt::KeepAspectRatio
-		      ,Qt::SmoothTransformation
-		      );
-	}
-	else
-	{
-		m_oScaledImage = m_oQImage;
-	}
-
-	painter.drawImage(0,0, m_oScaledImage);
-
-	//painter.drawImage(QPoint(), m_oQImage);
+	painter.drawImage(QPoint(), m_oQImage);
 
 }
 
