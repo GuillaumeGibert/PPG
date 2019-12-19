@@ -38,7 +38,7 @@ void ImageDisplay::paintEvent(QPaintEvent *)
 		m_oScaledImage = m_oQImage;
 	}
 
-	painter.drawImage(QPoint(), m_oScaledImage);
+	painter.drawImage(0,0, m_oScaledImage);
 }
 
 

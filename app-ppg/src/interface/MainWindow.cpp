@@ -32,6 +32,7 @@ void MainWindow::initWidgets()
 	if (nullptr == m_pWImageDisplay)
 	{
 		m_pWImageDisplay = new ImageDisplay();
+		m_pWImageDisplay->setMinimumSize(600, 600);
 		ui->vlWebcam->addWidget(m_pWImageDisplay);
 	}
 
