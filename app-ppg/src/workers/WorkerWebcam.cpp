@@ -14,6 +14,7 @@ WorkerWebcam::~WorkerWebcam()
 	{
 		m_pWebcamManager->close();
 		delete m_pWebcamManager;
+		m_pWebcamManager = nullptr;
 	}
 }
 

@@ -16,7 +16,7 @@ class FaceDetection
 
 		bool init();
 		bool loadConfigFile();
-		bool detect(cv::Mat);
+		std::vector<cv::Rect> detect(cv::Mat);
 
 private:
 	std::string m_sConfigFilename;

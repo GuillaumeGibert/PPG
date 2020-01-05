@@ -41,7 +41,8 @@ bool FaceDetection::init()
 	{
 		m_pCascadeClassifier = new cv::CascadeClassifier;
 	}
-
+	//TODO REMOVE THIS LINE
+	m_sCascadeClassifierFilename = "haarcascade_frontalface_alt.xml";
 	if (!m_pCascadeClassifier->load("../data/classifier/" + m_sCascadeClassifierFilename))
 	{ 
 		std::cout << "[ERROR](FaceDetection->init()) Cannot load cascade classifier file!" << std::endl;
@@ -51,7 +52,7 @@ bool FaceDetection::init()
 	return true;
 }
 
-bool FaceDetection::detect(cv::Mat frame)
+std::vector<cv::Rect> FaceDetection::detect(cv::Mat frame)
 {
 	// converts to grayscale
 	cv::Mat frameGray;
@@ -75,6 +76,6 @@ bool FaceDetection::detect(cv::Mat frame)
 	//if (faceRectangles.size() > 0)
 	//	emit sigBroadcastFaceRectangle(faceRectangles);
 
-	return true;
+	return faceRectangles;
 }
 

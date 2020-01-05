@@ -12,6 +12,7 @@
 #include "interface/MainWindow.h"
 
 #include "workers/WorkerWebcam.h"
+#include "workers/WorkerPreProcessing.h"
 
 // Qt
 #include <QThread>
@@ -73,8 +74,12 @@ public:
 	
 private:
 	MainWindow* m_window = nullptr;						/**< The main window. */
+	
 	WorkerWebcam* m_pWorkerWebcam = nullptr;
 	QThread m_TWorkerWebcam;
+
+	WorkerPreProcessing* m_pWorkerPreProcessing = nullptr;
+	QThread m_TWorkerPreProcessing;
 	
 };
 
