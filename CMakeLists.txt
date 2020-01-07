@@ -49,11 +49,15 @@ project(ppg)
 #####AUTO######
 
 #QT
-set(CMAKE_PREFIX_PATH "C:/Qt/5.11.1/msvc2015_64"  CACHE FILEPATH "path to qt5 vs2015 directory")
+set(CMAKE_PREFIX_PATH "C:/Qt/5.12.4/msvc2015_64"  CACHE FILEPATH "path to qt5 vs2015 directory")
 find_package(Qt5Widgets)
 find_package(Qt5Gui)
 find_package(Qt5Core)
 find_package(Qt5OpenGL)
+
+#OPENCV
+set(OpenCV_DIR "C:/Data/software/opencv/build/install"  CACHE FILEPATH "path to opencv directory")
+find_package( OpenCV REQUIRED )
 
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
@@ -64,16 +68,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 
 #####MANUAL######
-
-#OPENCV
-set(OPENCV_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/../3rdparty/opencv/opencv-4.0/include" CACHE FILEPATH "path to opencv include directory")
-set(OPENCV_LIB_DIR "${CMAKE_SOURCE_DIR}/../3rdparty/opencv/opencv-4.0/lib" CACHE FILEPATH "path to opencv lib directory")
-set(OPENCV_CORE_LIBRARY optimized opencv_core400 debug opencv_core400d)
-set(OPENCV_HIGHGUI_LIBRARY optimized opencv_highgui400 debug  opencv_highgui400d)
-set(OPENCV_IMPROC_LIBRARY optimized opencv_imgproc400 debug opencv_imgproc400d)
-set(OPENCV_ML_LIBRARY optimized opencv_ml400 debug opencv_ml400d)
-set(OPENCV_VIDEOIO_LIBRARY optimized opencv_videoio400 debug opencv_videoio400d)
-set(OPENCV_DNN_LIBRARY optimized opencv_dnn400 debug opencv_dnn400d)
 
 # MISC
 set(MISC_OPENGL_LIBRARY optimized opengl32 debug opengl32)

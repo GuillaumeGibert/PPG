@@ -6,7 +6,7 @@ set(LIBRARY_OUTPUT_PATH ../lib/${CMAKE_BUILD_TYPE})
 
 include_directories(./include)
 
-include_directories(${OPENCV_INCLUDE_DIR})
+include_directories(${OpenCV_INCLUDE_DIRS})
 
 
 file(

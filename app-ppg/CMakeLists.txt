@@ -11,8 +11,7 @@ include_directories(${TOOLKIT_QT_INCLUDE_DIR})
 include_directories(${TOOLKIT_SIGNAL_INCLUDE_DIR})
 include_directories(${TOOLKIT_TRACKING_INCLUDE_DIR})
 
-
-include_directories(${OPENCV_INCLUDE_DIR})
+include_directories(${OpenCV_INCLUDE_DIRS})
 
 include_directories(${Qt5Widgets_INCLUDE_DIRS})
 include_directories(${Qt5Core_INCLUDE_DIRS})
@@ -55,12 +54,7 @@ target_link_libraries(
 	Qt5::Gui
 	Qt5::OpenGL
 	
-	${OPENCV_CORE_LIBRARY}
-	${OPENCV_HIGHGUI_LIBRARY}
-	${OPENCV_IMPROC_LIBRARY}
-	${OPENCV_ML_LIBRARY}
-	${OPENCV_VIDEOIO_LIBRARY}
-	${OPENCV_DNN_LIBRARY}
+	${OpenCV_LIBS}
        
       	${MISC_OPENGL_LIBRARY}
 	${MISC_GLU_LIBRARY}
