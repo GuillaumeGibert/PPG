@@ -20,7 +20,7 @@ public slots:
 	void setCurrentFrame(cv::Mat);
 
 signals:
-	void sigBroadcastWebcamFrame(cv::Mat);
+	void sigBroadcastFaceRectangles(std::vector<cv::Rect>);
 
 private:
 	FaceDetection* m_pFaceDetector;

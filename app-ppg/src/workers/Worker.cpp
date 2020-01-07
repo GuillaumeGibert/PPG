@@ -16,10 +16,18 @@ Worker::Worker():
 Worker::~Worker()
 {
 	if (nullptr != m_pTimer)
+	{
 		delete m_pTimer;
+		m_pTimer = nullptr;
+	}
+		
 
 	if (nullptr != m_pElapsedTimer)
+	{
 		delete m_pElapsedTimer;
+		m_pElapsedTimer = nullptr;
+	}
+		
 }
 
 bool Worker::init()

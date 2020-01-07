@@ -62,7 +62,7 @@ std::vector<cv::Rect> FaceDetection::detect(cv::Mat frame)
 	std::vector<cv::Rect> faceRectangles;
 	m_pCascadeClassifier->detectMultiScale(frameGray, faceRectangles);
 
-
+	/*
 	for (size_t i = 0; i < faceRectangles.size(); i++)
 	{
 		int x1 = (int)(faceRectangles[i].x );
@@ -73,8 +73,7 @@ std::vector<cv::Rect> FaceDetection::detect(cv::Mat frame)
 	}
 
 	cv::imshow("OpenCV - HAAR Face Detection", frame);
-	//if (faceRectangles.size() > 0)
-	//	emit sigBroadcastFaceRectangle(faceRectangles);
+	*/
 
 	return faceRectangles;
 }

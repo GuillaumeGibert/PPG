@@ -49,6 +49,7 @@ public:
 
 public slots:
 	void setWebcamFrame(cv::Mat);
+	void setFaceRectangles(std::vector<cv::Rect>);
 
 	
 
@@ -64,6 +65,7 @@ private:
 	
 	ImageDisplay* m_pWImageDisplay;
 	cv::Mat m_oWebcamFrame;
+	std::vector<cv::Rect> m_vFaceRectangles;
 };
 
 #endif // MAINWINDOW_H

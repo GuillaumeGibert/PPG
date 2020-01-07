@@ -59,6 +59,10 @@ private:
 
 signals:
 	void sigStartWebcam();
+	void sigStopWebcam();
+
+	void sigStartPreProcessing();
+	void sigStopPreProcessing();
 	// -------------------- SIGNALS FOR THE WINDOW --------------------
 
 	

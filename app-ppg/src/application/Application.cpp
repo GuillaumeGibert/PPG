@@ -14,8 +14,14 @@ Application::Application()
 
 Application::~Application()
 {
+	// sends a signal to stop the webcam timer
+	emit sigStopWebcam();
+	emit sigStopPreProcessing();
+
+	// stops the threads
 	stopWorkerThreads();
 
+	// deletes the workers
 	deleteWorkers();
 }
 
@@ -29,6 +35,7 @@ void Application::init(MainWindow* window)
 	moveWorkersToThread();
 
 	emit sigStartWebcam();
+	emit sigStartPreProcessing();
 }
 
 void Application::initWorkers()
@@ -54,6 +61,7 @@ void Application::registerMetaTypes()
 {
 	// register opencv data types
 	qRegisterMetaType< cv::Mat >("cv::Mat");
+	qRegisterMetaType< std::vector<cv::Rect> >("std::vector<cv::Rect>");
 }
 
 void Application::setWorkerConnections()
@@ -63,6 +71,13 @@ void Application::setWorkerConnections()
 	QObject::connect(m_pWorkerWebcam, SIGNAL(sigBroadcastWebcamFrame(cv::Mat)), m_pWorkerPreProcessing, SLOT(setCurrentFrame(cv::Mat)));
 
 	QObject::connect(this, SIGNAL(sigStartWebcam()), m_pWorkerWebcam, SLOT(startWork()));
+	QObject::connect(this, SIGNAL(sigStopWebcam()), m_pWorkerWebcam, SLOT(stopWork()), Qt::BlockingQueuedConnection);
+
+	// WorkerPreProcessing
+	QObject::connect(this, SIGNAL(sigStartPreProcessing()), m_pWorkerPreProcessing, SLOT(startWork()));
+	QObject::connect(this, SIGNAL(sigStopPreProcessing()), m_pWorkerPreProcessing, SLOT(stopWork()), Qt::BlockingQueuedConnection);
+
+	QObject::connect(m_pWorkerPreProcessing, SIGNAL(sigBroadcastFaceRectangles(std::vector<cv::Rect>)), m_window, SLOT(setFaceRectangles(std::vector<cv::Rect>)));
 }
 
 void Application::moveWorkersToThread()
@@ -94,8 +109,16 @@ void Application::stopWorkerThreads()
 void Application::deleteWorkers()
 {
 	if (nullptr != m_pWorkerWebcam)
+	{
 		delete m_pWorkerWebcam;
+		m_pWorkerWebcam = nullptr;
+	}
+		
 
 	if (nullptr != m_pWorkerPreProcessing)
+	{
 		delete m_pWorkerPreProcessing;
+		m_pWorkerPreProcessing = nullptr;
+	}
+		
 }

@@ -51,7 +51,9 @@ void WorkerPreProcessing::doWork()
 
 	if (!l_oCurrentFrame.empty())
 	{
-
+		std::vector<cv::Rect> l_vFaceRectangles = m_pFaceDetector->detect(l_oCurrentFrame);
+		if (l_vFaceRectangles.size() > 0)
+			emit sigBroadcastFaceRectangles(l_vFaceRectangles);
 	}
 	else
 		if (m_bVerbose)
