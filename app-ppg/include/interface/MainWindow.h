@@ -17,6 +17,7 @@
 #include "opencv2/opencv.hpp"
 
 #include "ImageDisplay.h"
+#include "TemporalSignalDisplay.h"
 
 // Qt stuff
 namespace Ui {
@@ -50,7 +51,7 @@ public:
 public slots:
 	void setWebcamFrame(cv::Mat);
 	void setFaceRectangles(std::vector<cv::Rect>);
-
+	void setRGBMeanValues(std::vector<float>);
 	
 
 signals:
@@ -66,6 +67,8 @@ private:
 	ImageDisplay* m_pWImageDisplay;
 	cv::Mat m_oWebcamFrame;
 	std::vector<cv::Rect> m_vFaceRectangles;
+
+	TemporalSignalDisplay* m_pWTemporalSignalDisplay;
 };
 
 #endif // MAINWINDOW_H

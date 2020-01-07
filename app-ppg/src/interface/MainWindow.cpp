@@ -11,7 +11,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-	m_pWImageDisplay(nullptr)
+	m_pWImageDisplay(nullptr), m_pWTemporalSignalDisplay(nullptr)
 {
 	ui->setupUi(this);
 	//this->setWindowTitle(QString("PPG"));
@@ -23,7 +23,17 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
 	if (nullptr != m_pWImageDisplay)
+	{
 		delete m_pWImageDisplay;
+		m_pWImageDisplay = nullptr;
+	}
+
+	if (nullptr != m_pWTemporalSignalDisplay)
+	{
+		delete m_pWTemporalSignalDisplay;
+		m_pWTemporalSignalDisplay = nullptr;
+	}
+		
 }
 
 void MainWindow::initWidgets()
@@ -37,7 +47,23 @@ void MainWindow::initWidgets()
 	}
 
 	// Signal display
-	// TODO
+	if (nullptr == m_pWTemporalSignalDisplay)
+	{
+		m_pWTemporalSignalDisplay = new TemporalSignalDisplay();
+		m_pWTemporalSignalDisplay->setMinimumSize(600, 600);
+		m_pWTemporalSignalDisplay->setWidgetSize(QSize(640, 480));
+		std::vector<std::string> vSignalLabels;
+		vSignalLabels.push_back("R"); vSignalLabels.push_back("G"); vSignalLabels.push_back("B"); 
+		m_pWTemporalSignalDisplay->setSignalLabels(vSignalLabels);
+		m_pWTemporalSignalDisplay->setFps(30.0);
+		m_pWTemporalSignalDisplay->setXYRange(QSize(0, 5), QSize(0, 250));
+		m_pWTemporalSignalDisplay->setLegends("Time (s)", "Color amplitude");
+		m_pWTemporalSignalDisplay->setTicks(1, 50);
+		m_pWTemporalSignalDisplay->setDrawLine(true);
+			   		 
+		ui->vlWebcam->addWidget(m_pWTemporalSignalDisplay);
+	}
+	
 }
 
 void MainWindow::updateWebcamDisplay()
@@ -91,4 +117,9 @@ void MainWindow::setFaceRectangles(std::vector<cv::Rect> vFaceRectangles)
 {
 	m_vFaceRectangles = vFaceRectangles;
 	updateWebcamDisplay();
+}
+
+void MainWindow::setRGBMeanValues(std::vector<float> vRGBMeanValues)
+{
+	m_pWTemporalSignalDisplay->setNewValues(vRGBMeanValues);
 }

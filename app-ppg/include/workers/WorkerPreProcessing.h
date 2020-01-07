@@ -21,6 +21,7 @@ public slots:
 
 signals:
 	void sigBroadcastFaceRectangles(std::vector<cv::Rect>);
+	void sigBroadcastRGBMeanValues(std::vector<float>);
 
 private:
 	FaceDetection* m_pFaceDetector;

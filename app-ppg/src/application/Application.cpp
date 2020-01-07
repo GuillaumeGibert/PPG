@@ -62,6 +62,7 @@ void Application::registerMetaTypes()
 	// register opencv data types
 	qRegisterMetaType< cv::Mat >("cv::Mat");
 	qRegisterMetaType< std::vector<cv::Rect> >("std::vector<cv::Rect>");
+	qRegisterMetaType< std::vector<float> >("std::vector<float>");
 }
 
 void Application::setWorkerConnections()
@@ -78,6 +79,7 @@ void Application::setWorkerConnections()
 	QObject::connect(this, SIGNAL(sigStopPreProcessing()), m_pWorkerPreProcessing, SLOT(stopWork()), Qt::BlockingQueuedConnection);
 
 	QObject::connect(m_pWorkerPreProcessing, SIGNAL(sigBroadcastFaceRectangles(std::vector<cv::Rect>)), m_window, SLOT(setFaceRectangles(std::vector<cv::Rect>)));
+	QObject::connect(m_pWorkerPreProcessing, SIGNAL(sigBroadcastRGBMeanValues(std::vector<float>)), m_window, SLOT(setRGBMeanValues(std::vector<float>)));
 }
 
 void Application::moveWorkersToThread()
