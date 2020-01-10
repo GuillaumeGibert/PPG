@@ -1,43 +1,51 @@
-#include "workers/WorkerPreProcessing.h"
+#include "workers/WorkerBuffering.h"
 
-WorkerPreProcessing::WorkerPreProcessing()
+WorkerBuffering::WorkerBuffering()
 {
-	m_pFaceDetector = nullptr;
+	m_pBuffer = nullptr;
 	m_bIsWorkerInitialized = false;
 
 	init();
 }
 
-WorkerPreProcessing::~WorkerPreProcessing()
+WorkerBuffering::~WorkerBuffering()
 {
-	if (nullptr != m_pFaceDetector)
+	if (nullptr != m_pBuffer)
 	{
-		delete m_pFaceDetector;
-		m_pFaceDetector = nullptr;
+		delete m_pBuffer;
+		m_pBuffer = nullptr;
 	}
 }
 
-bool WorkerPreProcessing::init()
+bool WorkerBuffering::init()
 {
-	if (nullptr == m_pFaceDetector)
+	if (nullptr == m_pBuffer)
 	{
-		m_pFaceDetector = new FaceDetection();
-		m_pFaceDetector->init();
+		m_pBuffer = new Buffering();
+		m_pBuffer->setFps(30);
+		m_pBuffer->setNbSignals(3);
+		m_pBuffer->setDuration(2.0);
+		m_pBuffer->setShift(1.0);
+
 		m_bIsWorkerInitialized = true;
 	}
+
+	QObject::connect(m_pBuffer, SIGNAL(sigBroadcastBufferedSignalValues(std::vector<std::deque<float>>)), this, SLOT(sigBroadcastBufferedSignalValues(std::vector<std::deque<float>>)));
 
 	return m_bIsWorkerInitialized;
 }
 
-void WorkerPreProcessing::setCurrentFrame(cv::Mat oCurrentFrame)
+
+void WorkerBuffering::setSignalValues(float fTimestamp, std::vector<float> vSignalValues)
 {
 	m_oWorkerMutex.lockForWrite();
-		m_oCurrentFrame = oCurrentFrame;
+		m_pBuffer->setSignalValues(fTimestamp, vSignalValues);
 	m_oWorkerMutex.unlock();
 }
 
-void WorkerPreProcessing::doWork()
+void WorkerBuffering::doWork()
 {
+	/*
 	if (!m_bIsWorkerInitialized)
 	{
 		return;
@@ -70,4 +78,5 @@ void WorkerPreProcessing::doWork()
 	else
 		if (m_bVerbose)
 			qDebug() << "[WARNING] (WorkerPreProcessing::doWork): Frame is empty!";
+	*/
 }
