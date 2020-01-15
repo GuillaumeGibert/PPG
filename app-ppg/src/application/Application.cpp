@@ -55,6 +55,15 @@ void Application::initWorkers()
 		m_pWorkerPreProcessing->setVerboseMode(true);
 		m_pWorkerPreProcessing->setFps(30.0);
 	}
+
+	// WorkerBuffering
+	if (nullptr == m_pWorkerBuffering)
+	{
+		m_pWorkerBuffering = new WorkerBuffering();
+		m_pWorkerBuffering->setVerboseMode(true);
+		m_pWorkerBuffering->setFps(30.0);
+	}
+
 }
 
 void Application::registerMetaTypes()
@@ -63,6 +72,7 @@ void Application::registerMetaTypes()
 	qRegisterMetaType< cv::Mat >("cv::Mat");
 	qRegisterMetaType< std::vector<cv::Rect> >("std::vector<cv::Rect>");
 	qRegisterMetaType< std::vector<float> >("std::vector<float>");
+	qRegisterMetaType< std::vector< std::deque<float> > >("std::vector<std::deque<float>>");
 }
 
 void Application::setWorkerConnections()
@@ -79,7 +89,11 @@ void Application::setWorkerConnections()
 	QObject::connect(this, SIGNAL(sigStopPreProcessing()), m_pWorkerPreProcessing, SLOT(stopWork()), Qt::BlockingQueuedConnection);
 
 	QObject::connect(m_pWorkerPreProcessing, SIGNAL(sigBroadcastFaceRectangles(std::vector<cv::Rect>)), m_window, SLOT(setFaceRectangles(std::vector<cv::Rect>)));
-	QObject::connect(m_pWorkerPreProcessing, SIGNAL(sigBroadcastRGBMeanValues(std::vector<float>)), m_window, SLOT(setRGBMeanValues(std::vector<float>)));
+	QObject::connect(m_pWorkerPreProcessing, SIGNAL(sigBroadcastRGBMeanValues(float, std::vector<float>)), m_window, SLOT(setRGBMeanValues(float, std::vector<float>)));
+	QObject::connect(m_pWorkerPreProcessing, SIGNAL(sigBroadcastRGBMeanValues(float, std::vector<float>)), m_pWorkerBuffering, SLOT(setSignalValues(float, std::vector<float>)));
+
+	// WorkerBuffering
+	QObject::connect(m_pWorkerBuffering, SIGNAL(sigBroadcastBufferedSignalValues(std::vector<std::deque<float>>)), m_window, SLOT(setBufferedSignalValues(std::vector<std::deque<float>>)));
 }
 
 void Application::moveWorkersToThread()
@@ -97,6 +111,13 @@ void Application::moveWorkersToThread()
 		m_pWorkerPreProcessing->moveToThread(&m_TWorkerPreProcessing);
 		m_TWorkerPreProcessing.start();
 	}
+
+	// WorkerBuffering
+	if (nullptr != m_pWorkerBuffering)
+	{
+		m_pWorkerBuffering->moveToThread(&m_TWorkerBuffering);
+		m_TWorkerBuffering.start();
+	}
 }
 
 void Application::stopWorkerThreads()
@@ -106,6 +127,9 @@ void Application::stopWorkerThreads()
 
 	m_TWorkerPreProcessing.quit();
 	m_TWorkerPreProcessing.wait();
+
+	m_TWorkerBuffering.quit();
+	m_TWorkerBuffering.wait();
 }
 
 void Application::deleteWorkers()
@@ -121,6 +145,12 @@ void Application::deleteWorkers()
 	{
 		delete m_pWorkerPreProcessing;
 		m_pWorkerPreProcessing = nullptr;
+	}
+
+	if (nullptr != m_pWorkerBuffering)
+	{
+		delete m_pWorkerBuffering;
+		m_pWorkerBuffering = nullptr;
 	}
 		
 }

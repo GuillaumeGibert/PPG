@@ -13,6 +13,7 @@
 
 #include "workers/WorkerWebcam.h"
 #include "workers/WorkerPreProcessing.h"
+#include "workers/WorkerBuffering.h"
 
 // Qt
 #include <QThread>
@@ -84,6 +85,9 @@ private:
 
 	WorkerPreProcessing* m_pWorkerPreProcessing = nullptr;
 	QThread m_TWorkerPreProcessing;
+
+	WorkerBuffering* m_pWorkerBuffering = nullptr;
+	QThread m_TWorkerBuffering;
 	
 };
 

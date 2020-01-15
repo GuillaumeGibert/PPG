@@ -17,17 +17,12 @@ protected:
 	bool init();
 
 public slots:
-	//void setCurrentFrame(cv::Mat);
 	void setSignalValues(float, std::vector<float>);
 
 signals:
 	void sigBroadcastBufferedSignalValues(std::vector<std::deque<float>>);
-	//void sigBroadcastFaceRectangles(std::vector<cv::Rect>);
-	//void sigBroadcastRGBMeanValues(std::vector<float>);
-
+	
 private:
-	//FaceDetection* m_pFaceDetector;
-	//cv::Mat m_oCurrentFrame;
 	Buffering* m_pBuffer;
 
 };

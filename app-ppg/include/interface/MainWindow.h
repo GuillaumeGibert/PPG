@@ -18,6 +18,7 @@
 
 #include "ImageDisplay.h"
 #include "TemporalSignalDisplay.h"
+#include "BufferedSignalDisplay.h"
 
 // Qt stuff
 namespace Ui {
@@ -51,7 +52,8 @@ public:
 public slots:
 	void setWebcamFrame(cv::Mat);
 	void setFaceRectangles(std::vector<cv::Rect>);
-	void setRGBMeanValues(std::vector<float>);
+	void setRGBMeanValues(float, std::vector<float>);
+	void setBufferedSignalValues(std::vector<std::deque<float>>);
 	
 
 signals:
@@ -69,6 +71,8 @@ private:
 	std::vector<cv::Rect> m_vFaceRectangles;
 
 	TemporalSignalDisplay* m_pWTemporalSignalDisplay;
+
+	BufferedSignalDisplay* m_pWBufferedSignalDisplay;
 };
 
 #endif // MAINWINDOW_H

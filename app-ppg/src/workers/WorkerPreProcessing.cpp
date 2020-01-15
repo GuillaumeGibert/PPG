@@ -64,7 +64,7 @@ void WorkerPreProcessing::doWork()
 		cv::Mat l_oFaceFrame = l_oCurrentFrame(l_vFaceRectangles[0]);
 		cv::Scalar l_oMeanRGB = cv::mean(l_oFaceFrame);
 		std::vector<float> l_vRGBMeanValues{ (float)l_oMeanRGB[0], (float)l_oMeanRGB[1], (float)l_oMeanRGB[2] };
-		emit sigBroadcastRGBMeanValues(l_vRGBMeanValues);
+		emit sigBroadcastRGBMeanValues((float)m_pElapsedTimer->elapsed() / 1000.0, l_vRGBMeanValues);
 		//std::cout << "mean R,G,B = (" << l_oMeanRGB[0] << ", " << l_oMeanRGB[1] << ", " << l_oMeanRGB[2] << ", " << l_oMeanRGB[3]<<  ")" << std::endl;
 	}
 	else

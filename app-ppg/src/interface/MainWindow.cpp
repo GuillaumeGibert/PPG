@@ -11,7 +11,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-	m_pWImageDisplay(nullptr), m_pWTemporalSignalDisplay(nullptr)
+	m_pWImageDisplay(nullptr), m_pWTemporalSignalDisplay(nullptr), m_pWBufferedSignalDisplay(nullptr)
 {
 	ui->setupUi(this);
 	//this->setWindowTitle(QString("PPG"));
@@ -33,7 +33,12 @@ MainWindow::~MainWindow()
 		delete m_pWTemporalSignalDisplay;
 		m_pWTemporalSignalDisplay = nullptr;
 	}
-		
+	
+	if (nullptr != m_pWBufferedSignalDisplay)
+	{
+		delete m_pWBufferedSignalDisplay;
+		m_pWBufferedSignalDisplay = nullptr;
+	}
 }
 
 void MainWindow::initWidgets()
@@ -61,7 +66,25 @@ void MainWindow::initWidgets()
 		m_pWTemporalSignalDisplay->setTicks(1, 50);
 		m_pWTemporalSignalDisplay->setDrawLine(true);
 			   		 
-		ui->vlWebcam->addWidget(m_pWTemporalSignalDisplay);
+		ui->vlSignal->addWidget(m_pWTemporalSignalDisplay);
+	}
+
+	// Buffered Signal display
+	if (nullptr == m_pWBufferedSignalDisplay)
+	{
+		m_pWBufferedSignalDisplay = new BufferedSignalDisplay();
+		m_pWBufferedSignalDisplay->setMinimumSize(600, 600);
+		m_pWBufferedSignalDisplay->setWidgetSize(QSize(640, 480));
+		std::vector<std::string> vSignalLabels;
+		vSignalLabels.push_back("R"); vSignalLabels.push_back("G"); vSignalLabels.push_back("B");
+		m_pWBufferedSignalDisplay->setSignalLabels(vSignalLabels);
+		m_pWBufferedSignalDisplay->setFps(30.0);
+		m_pWBufferedSignalDisplay->setXYRange(QSize(0, 15), QSize(0, 250));
+		m_pWBufferedSignalDisplay->setLegends("Time (s)", "Color amplitude");
+		m_pWBufferedSignalDisplay->setTicks(1, 50);
+		m_pWBufferedSignalDisplay->setDrawLine(true);
+
+		ui->vlSignal->addWidget(m_pWBufferedSignalDisplay);
 	}
 	
 }
@@ -119,7 +142,12 @@ void MainWindow::setFaceRectangles(std::vector<cv::Rect> vFaceRectangles)
 	updateWebcamDisplay();
 }
 
-void MainWindow::setRGBMeanValues(std::vector<float> vRGBMeanValues)
+void MainWindow::setRGBMeanValues(float timestamp, std::vector<float> vRGBMeanValues)
 {
 	m_pWTemporalSignalDisplay->setNewValues(vRGBMeanValues);
+}
+
+void MainWindow::setBufferedSignalValues(std::vector<std::deque<float>> vBufferedSignalValues)
+{
+	m_pWBufferedSignalDisplay->setNewValues(vBufferedSignalValues);
 }
