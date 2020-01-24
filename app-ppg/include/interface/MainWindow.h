@@ -73,6 +73,8 @@ private:
 	TemporalSignalDisplay* m_pWTemporalSignalDisplay;
 
 	BufferedSignalDisplay* m_pWBufferedSignalDisplay;
+
+	BufferedSignalDisplay* m_pWPowerSpectrumDisplay;
 };
 
 #endif // MAINWINDOW_H

@@ -11,7 +11,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-	m_pWImageDisplay(nullptr), m_pWTemporalSignalDisplay(nullptr), m_pWBufferedSignalDisplay(nullptr)
+	m_pWImageDisplay(nullptr), m_pWTemporalSignalDisplay(nullptr), m_pWBufferedSignalDisplay(nullptr), m_pWPowerSpectrumDisplay(nullptr)
 {
 	ui->setupUi(this);
 	//this->setWindowTitle(QString("PPG"));
@@ -38,6 +38,12 @@ MainWindow::~MainWindow()
 	{
 		delete m_pWBufferedSignalDisplay;
 		m_pWBufferedSignalDisplay = nullptr;
+	}
+
+	if (nullptr != m_pWPowerSpectrumDisplay)
+	{
+		delete m_pWPowerSpectrumDisplay;
+		m_pWPowerSpectrumDisplay = nullptr;
 	}
 }
 
@@ -86,7 +92,24 @@ void MainWindow::initWidgets()
 
 		ui->vlSignal->addWidget(m_pWBufferedSignalDisplay);
 	}
-	
+
+	// Power Spectrum display
+	if (nullptr == m_pWPowerSpectrumDisplay)
+	{
+		m_pWPowerSpectrumDisplay = new BufferedSignalDisplay();
+		m_pWPowerSpectrumDisplay->setMinimumSize(600, 600);
+		m_pWPowerSpectrumDisplay->setWidgetSize(QSize(640, 480));
+		std::vector<std::string> vSignalLabels;
+		vSignalLabels.push_back("R"); vSignalLabels.push_back("G"); vSignalLabels.push_back("B");
+		m_pWPowerSpectrumDisplay->setSignalLabels(vSignalLabels);
+		m_pWPowerSpectrumDisplay->setFps(30.0);
+		m_pWPowerSpectrumDisplay->setXYRange(QSize(0, 15), QSize(0, 250));
+		m_pWPowerSpectrumDisplay->setLegends("Frequency (Hz)", "Power spectrum");
+		m_pWPowerSpectrumDisplay->setTicks(5, 50);
+		m_pWPowerSpectrumDisplay->setDrawLine(true);
+
+		ui->vlSignal->addWidget(m_pWPowerSpectrumDisplay);
+	}
 }
 
 void MainWindow::updateWebcamDisplay()
